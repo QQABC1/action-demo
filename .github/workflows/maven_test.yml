@@ -24,9 +24,9 @@ jobs:
           distribution: 'temurin'  # 这是最常用的 OpenJDK 发行版
           cache: 'maven'           # 开启缓存，加速下载依赖
 
-      # 3. 赋予 Maven 脚本执行权限 (防止 Linux 下权限不足报错)
-      - name: Grant execute permission for mvnw
-        run: chmod +x mvnw
+      - name: Run Unit Tests
+          # 把 ./mvnw 改成 mvn
+        run: mvn clean test -B
 
       # 4. 运行测试
       # clean: 清理旧文件
