@@ -4,23 +4,29 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import java.util.List;
 
 @SpringBootTest
 class DemoApplicationTests {
 
     @Autowired
-    private DemoApplication demoApplication;
+    private UserRepository userRepository;
 
     @Test
-    void contextLoads() {
-        // 测试 Spring 容器能否正常启动
-    }
+    void testDatabaseOperation() {
+        System.out.println("开始测试数据库...");
 
-    @Test
-    void testSayHello() {
-        // 测试我们的业务逻辑
-        String result = demoApplication.sayHello();
-        // 断言：如果不等于 "Hello Action"，测试就会失败
-        Assertions.assertEquals("Hello Action", result);
+        // 1. 存数据
+        UserEntity user = new UserEntity("GitHubActionUser");
+        userRepository.save(user);
+
+        // 2. 查数据
+        List<UserEntity> users = userRepository.findAll();
+
+        // 3. 断言验证
+        Assertions.assertTrue(users.size() > 0, "数据库里应该有数据");
+        Assertions.assertEquals("GitHubActionUser", users.get(0).getUsername());
+
+        System.out.println("数据库测试通过！");
     }
 }
